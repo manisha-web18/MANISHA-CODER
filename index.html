@@ -2,63 +2,342 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MANISHA-MD</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MANISHA-MD Profile & Music Player</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins&display=swap">
   <style>
-    .btn:hover {
+    :root {
+      --bg-color: linear-gradient(45deg, #ff004c, #0fffc1, #2c00ff, #ff9900);
+      --text-color: white;
+      --card-bg: rgba(255, 255, 255, 0.07);
+      --border-color: rgba(255, 255, 255, 0.15);
+    }
+    body.dark {
+      --bg-color: #111;
+      --text-color: #eee;
+      --card-bg: #1a1a1a;
+      --border-color: #333;
+    }
+
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-color);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: var(--text-color);
+      gap: 25px;
+      transition: background 0.5s ease, color 0.3s ease;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card {
+      backdrop-filter: blur(15px);
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 25px;
+      padding: 40px 30px;
+      text-align: center;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+      user-select: none;
+    }
+
+    .profile-img {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 20px #00fff7, 0 0 30px #ff00c8;
+      animation: spin 10s linear infinite;
+      margin-bottom: 20px;
+      object-fit: cover;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    h1 {
+      font-size: 2.3em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1em;
+      color: #ccc;
+      margin-bottom: 25px;
+    }
+
+    .glow-button, .zip-button {
+      padding: 12px 28px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
+      background-size: 600% 600%;
+      color: white;
+      cursor: pointer;
+      animation: glowButton 6s ease infinite;
+      box-shadow: 0 0 20px #fff;
+      margin: 10px auto;
+      display: block;
+      text-decoration: none;
+      font-weight: 600;
+      width: 200px;
+      transition: transform 0.3s ease;
+    }
+
+    .zip-button {
+      background: linear-gradient(45deg, #ff8800, #ff0044);
+      box-shadow: 0 0 15px #ff5500;
+    }
+
+    @keyframes glowButton {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .glow-button:hover, .zip-button:hover {
       transform: scale(1.05);
+    }
+
+    .music-player {
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 20px 30px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .music-player h2 {
+      margin-bottom: 15px;
+    }
+
+    .music-player audio {
+      width: 100%;
+      margin-bottom: 15px;
+      border-radius: 10px;
+    }
+
+    .music-controls {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .music-controls button {
+      background: linear-gradient(45deg, #ff00ff, #00ffff);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .music-controls button:hover {
+      transform: scale(1.1);
+    }
+
+    .music-info {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .api-search {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .api-search input {
+      padding: 10px;
+      border-radius: 10px;
+      width: 70%;
+      max-width: 300px;
+      margin-right: 10px;
+    }
+
+    .api-search button {
+      padding: 10px 20px;
+      border-radius: 10px;
+      background: #00aaff;
+      color: white;
+      font-weight: bold;
+      border: none;
+    }
+
+    .dark-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    .owner-number {
+      color: #aaffff;
+      font-size: 0.95em;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .github-link {
+      color: #fff;
+      background: #333;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 20px;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 10px;
     }
   </style>
 </head>
-<body class="bg-gradient-to-r from-purple-200 to-blue-200 min-h-screen flex items-center justify-center">
+<body>
 
-  <div class="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full text-center">
-    <!-- Profile Photo -->
-    <img src="https://files.catbox.moe/vbi10j.png" alt="Manisha's Photo"
-         class="w-32 h-32 rounded-full mx-auto border-4 border-blue-400 shadow-md mb-4"/>
+<button class="dark-toggle" onclick="toggleMode()">🌗 Toggle Mode</button>
 
-    <!-- Name -->
-    <h1 class="text-2xl font-bold text-blue-600">MANISHA-MD</h1>
-    <p class="text-gray-500 mb-6">Owner: <span class="font-semibold">Manisha</span></p>
+<div class="card">
+  <img class="profile-img" src="https://files.catbox.moe/vbi10j.png" alt="MANISHA-MD" />
+  <h1>MANISHA-MD</h1>
+  <p>RGB ✨ Neon ✨ Creative Developer</p>
 
-    <!-- Buttons -->
-    <div class="space-y-3">
-      <!-- Repo Zip Button -->
-      <a href="MANISHA-MD-main.zip" download
-         class="btn block w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-xl transition duration-200">
-        📥 Download ZIP File
-      </a>
+  <button class="glow-button" onclick="alert('Thanks for following MANISHA-MD 💖')">💖 Follow Me</button>
+  <a class="zip-button" href="https://example.com/my-bot.zip" download>📦 Download ZIP</a>
+  <a class="github-link" href="https://github.com/manisha-Official18/MANISHA-MD" target="_blank">🌐 View on GitHub</a>
 
-      <!-- WhatsApp Channel Join Button -->
-      <a href="https://whatsapp.com/channel/0029VbAdMtMGk1G1R9Yg2L3x" target="_blank"
-         class="btn block w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-xl transition duration-200">
-        📲 Join WhatsApp Channel
-      </a>
+  <div class="owner-number">Owner: +94 72 155 1183</div>
+</div>
 
-      <!-- Bot Repo Link Button -->
-      <a href="https://github.com/manisha-Official18/MANISHA-MD" target="_blank"
-         class="btn block w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-xl transition duration-200">
-        🤖 View Bot GitHub Repository
-      </a>
-
-    </div>
-
-    <!-- Description -->
-    <p class="text-sm text-gray-600 mt-6">
-      This bot page lets you join Manisha’s official WhatsApp channel, download the source code, and view the GitHub repository.
-    </p>
-
-    <!-- Date -->
-    <p class="text-xs text-gray-400 mt-2">
-      🔄 Last updated: June 6, 2025
-    </p>
-
-    <!-- Footer -->
-    <p class="text-xs text-gray-400 mt-4">
-      🚀 Created with ❤️ by Manisha
-    </p>
+<div class="music-player">
+  <h2>🎵 Music Player</h2>
+  <audio id="audio" preload="metadata" controls></audio>
+  <div class="music-controls">
+    <button id="prevBtn">⏮️ Prev</button>
+    <button id="playPauseBtn">▶️ Play</button>
+    <button id="nextBtn">⏭️ Next</button>
   </div>
+  <div class="music-info" id="musicInfo">Select a song to play</div>
+</div>
+
+<div class="api-search">
+  <h3>🔎 Search & Play Song via API</h3>
+  <input type="text" id="songQuery" placeholder="Enter song name...">
+  <button onclick="searchSongAPI()">Search</button>
+  <div id="apiResult" style="margin-top: 10px;"></div>
+</div>
+
+<script>
+  // Theme Toggle
+  function toggleMode() {
+    document.body.classList.toggle("dark");
+  }
+
+  // Music Player Logic
+  const songs = [
+    { title: "🎶 Song 1 - Vibe", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+    { title: "🎶 Song 2 - Chill Zone", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+    { title: "🎶 Song 3 - Happy Mood", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+  ];
+
+  let currentSongIndex = 0;
+  const audio = document.getElementById("audio");
+  const playPauseBtn = document.getElementById("playPauseBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const musicInfo = document.getElementById("musicInfo");
+
+  function loadSong(index) {
+    if (index < 0) index = songs.length - 1;
+    else if (index >= songs.length) index = 0;
+    currentSongIndex = index;
+    audio.src = songs[currentSongIndex].src;
+    musicInfo.textContent = songs[currentSongIndex].title;
+  }
+
+  function playSong() {
+    audio.play();
+    playPauseBtn.textContent = "⏸️ Pause";
+  }
+
+  function pauseSong() {
+    audio.pause();
+    playPauseBtn.textContent = "▶️ Play";
+  }
+
+  playPauseBtn.addEventListener("click", () => {
+    if (audio.paused) playSong();
+    else pauseSong();
+  });
+
+  prevBtn.addEventListener("click", () => {
+    loadSong(currentSongIndex - 1);
+    playSong();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    loadSong(currentSongIndex + 1);
+    playSong();
+  });
+
+  audio.addEventListener("ended", () => {
+    loadSong(currentSongIndex + 1);
+    playSong();
+  });
+
+  loadSong(currentSongIndex);
+
+  // API Song Search
+  async function searchSongAPI() {
+    const query = document.getElementById("songQuery").value.trim();
+    const resultBox = document.getElementById("apiResult");
+    if (!query) return resultBox.textContent = "❌ Please enter a song name";
+
+    resultBox.textContent = "⏳ Searching...";
+
+    try {
+      const res = await fetch(`https://tanchoapi.xyz/api/download/song?name=${encodeURIComponent(query)}`);
+      const data = await res.json();
+
+      if (!data.status || !data.result?.url) {
+        resultBox.textContent = "❌ Song not found!";
+        return;
+      }
+
+      audio.src = data.result.url;
+      musicInfo.textContent = `🎵 ${data.result.title || query}`;
+      audio.play();
+      playPauseBtn.textContent = '⏸️ Pause';
+      resultBox.textContent = "✅ Song loaded!";
+    } catch (err) {
+      resultBox.textContent = "❌ Error fetching song!";
+      console.error(err);
+    }
+  }
+</script>
 
 </body>
-</html>
+  </html>
